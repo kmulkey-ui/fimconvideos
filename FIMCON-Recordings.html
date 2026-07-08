@@ -1,0 +1,451 @@
+<!-- ============================================================= -->
+<!--  FIMCON 2026 - Session Recordings                             -->
+<!--  Self-contained block for vFairs. All CSS is namespaced       -->
+<!--  (fc-*) and scoped under #fimcon-recordings so it will NOT    -->
+<!--  collide with vFairs / Bootstrap styles.                      -->
+<!--                                                               -->
+<!--  TO ADD A VIDEO: copy one { ... } block in the "sessions"     -->
+<!--  list below and edit day / type / time / title / mod /        -->
+<!--  speakers / url. Keep it inside the correct day.              -->
+<!-- ============================================================= -->
+
+<style>
+  #fimcon-recordings{
+    --fc-bg:#f4f7fa;
+    --fc-card:#ffffff;
+    --fc-ink:#16385c;
+    --fc-muted:#5f7488;
+    --fc-line:#e0e8f0;
+    --fc-blue:#12559c;
+    --fc-blue-dark:#0e4179;
+    --fc-green:#5cb033;
+    --fc-green-dark:#4a9128;
+    --fc-badge:#eaf1f8;
+
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    color:var(--fc-ink);
+    background:var(--fc-bg);
+    line-height:1.5;
+    text-align:left;
+    max-width:900px;
+    margin:0 auto;
+    padding:40px 24px 56px;
+    border-radius:14px;
+    -webkit-font-smoothing:antialiased;
+  }
+  #fimcon-recordings *{box-sizing:border-box;margin:0;padding:0}
+
+  #fimcon-recordings .fc-eyebrow{
+    font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--fc-green);margin-bottom:10px;text-align:left;
+  }
+  #fimcon-recordings .fc-h1{
+    font-size:34px;line-height:1.15;font-weight:800;letter-spacing:-.02em;
+    color:var(--fc-blue);text-align:left;
+  }
+  #fimcon-recordings .fc-hero{display:block;width:100%;max-width:560px;height:auto;margin:0 auto}
+  #fimcon-recordings .fc-sub{color:var(--fc-muted);margin:14px auto 0;font-size:16px;max-width:60ch;text-align:center}
+
+  #fimcon-recordings .fc-search{margin:28px 0 8px;position:relative}
+  #fimcon-recordings .fc-search-input{
+    width:100%;padding:14px 16px 14px 44px;font-size:15px;
+    border:1px solid var(--fc-line);border-radius:10px;background:var(--fc-card);
+    color:var(--fc-ink);outline:none;transition:border-color .15s,box-shadow .15s;
+  }
+  #fimcon-recordings .fc-search-input:focus{border-color:var(--fc-blue);box-shadow:0 0 0 3px rgba(18,85,156,.14)}
+  #fimcon-recordings .fc-search-icon{position:absolute;left:15px;top:50%;transform:translateY(-50%);color:var(--fc-muted)}
+  #fimcon-recordings .fc-count{font-size:13px;color:var(--fc-muted);margin-top:10px;text-align:left}
+
+  #fimcon-recordings .fc-day{
+    font-size:15px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;
+    color:#ffffff;margin:34px 0 16px;padding:13px 20px;border-radius:6px;text-align:left;
+  }
+  #fimcon-recordings .fc-day--green{background:#6bb345}
+  #fimcon-recordings .fc-day--blue{background:#094d8e}
+
+  #fimcon-recordings .fc-card{
+    display:flex;align-items:center;gap:20px;
+    background:var(--fc-card);border:1px solid var(--fc-line);border-radius:12px;
+    padding:18px 20px;margin-bottom:12px;
+    transition:box-shadow .15s,border-color .15s,transform .15s;
+  }
+  #fimcon-recordings .fc-card:hover{box-shadow:0 6px 22px rgba(18,85,156,.10);border-color:#c6d7e8;transform:translateY(-1px)}
+  #fimcon-recordings .fc-cardbody{flex:1;min-width:0;text-align:left}
+  #fimcon-recordings .fc-meta{display:flex;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap}
+  #fimcon-recordings .fc-badge{
+    display:inline-block;font-size:11px;font-weight:700;letter-spacing:.05em;
+    text-transform:uppercase;color:var(--fc-blue);background:var(--fc-badge);
+    padding:3px 9px;border-radius:100px;
+  }
+  #fimcon-recordings .fc-time{font-size:12.5px;font-weight:600;color:var(--fc-green-dark);min-width:140px}
+  #fimcon-recordings .fc-title{font-size:17px;font-weight:700;letter-spacing:-.01em;line-height:1.3;color:var(--fc-ink)}
+  #fimcon-recordings .fc-speakers{color:var(--fc-muted);font-size:14px;margin-top:6px}
+  #fimcon-recordings .fc-mod{color:var(--fc-ink);font-weight:600}
+
+  /* Hover Glow Button - Indigo Glow variant (from component-showcase) */
+  #fimcon-recordings .fc-watch{
+    position:relative;flex-shrink:0;display:inline-block;overflow:hidden;
+    border:none;cursor:pointer;font-family:inherit;white-space:nowrap;
+    font-size:15px;font-weight:600;padding:12px 24px;border-radius:8px;z-index:0;
+    background:#094d8e;color:#ffffff;transition:color .3s ease;
+  }
+  #fimcon-recordings .fc-watch:hover{color:#ffffff}
+  #fimcon-recordings .fc-watch .fc-glow{
+    position:absolute;width:200px;height:200px;border-radius:50%;
+    left:var(--fc-gx,50%);top:var(--fc-gy,50%);
+    transform:translate(-50%,-50%) scale(0);
+    background:radial-gradient(circle, #6bb345 10%, transparent 70%);
+    opacity:.5;pointer-events:none;z-index:0;transition:transform .4s ease-out;
+  }
+  #fimcon-recordings .fc-watch:hover .fc-glow{transform:translate(-50%,-50%) scale(1.2)}
+  #fimcon-recordings .fc-watch .fc-watch-label{
+    position:relative;z-index:1;display:inline-flex;align-items:center;gap:7px;
+  }
+  #fimcon-recordings .fc-watch .fc-watch-label svg{width:15px;height:15px}
+
+  #fimcon-recordings .fc-empty{color:var(--fc-muted);text-align:center;padding:48px 0;font-size:15px;display:none}
+  #fimcon-recordings .fc-footer{margin-top:44px;color:var(--fc-muted);font-size:13px;text-align:center}
+
+  @media(max-width:620px){
+    #fimcon-recordings .fc-h1{font-size:27px}
+    #fimcon-recordings .fc-card{flex-direction:column;align-items:flex-start;gap:14px}
+    #fimcon-recordings .fc-watch{width:100%;text-align:center}
+  }
+
+  /* ---- Lightbox player (appended to <body>, scoped by its own id) ---- */
+  #fc-modal{
+    position:fixed;inset:0;z-index:99999;display:none;
+    align-items:center;justify-content:center;padding:24px;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  }
+  #fc-modal.fc-open{display:flex}
+  #fc-modal .fc-modal-backdrop{position:absolute;inset:0;background:transparent}
+  #fc-modal .fc-modal-box{
+    position:relative;width:100%;max-width:960px;background:#0e2941;
+    border-radius:14px;overflow:hidden;box-shadow:0 24px 70px rgba(0,0,0,.55);
+  }
+  #fc-modal .fc-modal-head{display:flex;align-items:center;gap:16px;padding:14px 18px;background:#12559c;color:#fff}
+  #fc-modal .fc-modal-title{flex:1;font-size:15px;font-weight:600;line-height:1.35;min-width:0}
+  #fc-modal .fc-modal-close{
+    flex-shrink:0;width:34px;height:34px;border:none;border-radius:8px;cursor:pointer;
+    background:rgba(255,255,255,.15);color:#fff;font-size:24px;line-height:1;
+    display:flex;align-items:center;justify-content:center;transition:background .15s;
+  }
+  #fc-modal .fc-modal-close:hover{background:rgba(255,255,255,.28)}
+  #fc-modal .fc-video{position:relative;width:100%;padding-top:56.25%;background:#000}
+  #fc-modal .fc-video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+  #fc-modal .fc-video video{position:absolute;inset:0;width:100%;height:100%;background:#000}
+  /* Invisible cover over the Google Drive "open in new window" pop-out button (top-right) so it cannot be clicked. */
+  #fc-modal .fc-drive-cover{position:absolute;top:0;right:0;width:66px;height:52px;z-index:2;display:none;background:transparent;cursor:default}
+  #fc-modal.fc-drive .fc-drive-cover{display:block}
+</style>
+
+<div id="fimcon-recordings">
+  <img class="fc-hero" src="https://data-us.vfairs.com/1000001379/document/File-1783375999-f6be544a.png" alt="FIMCON 2026 Session Archive">
+  <p class="fc-sub">Watch FIMCON 2026 on demand. Keynotes, panels, and sessions shaping the future of Food is Medicine.</p>
+
+  <div class="fc-search">
+    <svg class="fc-search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+    <input class="fc-search-input" id="fc-q" type="text" placeholder="Search by session title or speaker..." autocomplete="off">
+  </div>
+  <div class="fc-count" id="fc-count"></div>
+
+  <div id="fc-list"></div>
+  <div class="fc-empty" id="fc-empty">No sessions match your search.</div>
+
+  <div class="fc-footer" id="fc-footer"></div>
+</div>
+
+<div id="fc-modal" aria-hidden="true">
+  <div class="fc-modal-backdrop" data-close></div>
+  <div class="fc-modal-box" role="dialog" aria-modal="true" aria-labelledby="fc-modal-title">
+    <div class="fc-modal-head">
+      <div class="fc-modal-title" id="fc-modal-title"></div>
+      <button class="fc-modal-close" id="fc-modal-close" aria-label="Close video">&times;</button>
+    </div>
+    <div class="fc-video">
+      <iframe id="fc-player" src="" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+      <video id="fc-video-el" controls playsinline preload="metadata" style="display:none"></video>
+      <div class="fc-drive-cover" id="fc-drive-cover"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var sessions = [
+    // ---- MONDAY, JUNE 1 ----
+    { day:"Monday, June 1", type:"Welcome Remarks", time:"8:45 \u2013 9:00 AM",
+      title:"Welcome Remarks from FIMCON Steering Committee",
+      mod:"", speakers:"Emily Callahan, MPH, RDN \u00b7 Katie Garfield, JD \u00b7 Sam Hoeffler \u00b7 Colin Schwartz \u00b7 Alissa Wassung",
+      url:"https://iframe.mediadelivery.net/embed/700386/1669256e-2632-4390-b6e3-0f3449fb0838" },
+
+    { day:"Monday, June 1", type:"Keynote", time:"9:00 \u2013 9:35 AM",
+      title:"Food Is Medicine: Building a Healthier America",
+      mod:"", speakers:"Mehmet Oz, MD \u00B7 Rajiv Shah, MD",
+      url:"https://iframe.mediadelivery.net/embed/700386/bcf7f1d8-b816-4d41-8c6e-49e18bdda2de" },
+
+    { day:"Monday, June 1", type:"Plenary", time:"9:35 \u2013 10:30 AM",
+      title:"Advancing Food is Medicine: Innovations & Field Insights",
+      mod:"Lisa Sanders", speakers:"Jaclyn Albin, MD \u00B7 Aidan Dewar \u00B7 Matt Pieper \u00B7 Peter Skillern",
+      url:"https://iframe.mediadelivery.net/embed/700386/18a9f458-1300-4eb1-9fde-2223d10c6dec" },
+
+    { day:"Monday, June 1", type:"Culinary Demo", time:"10:30 \u2013 11:00 AM",
+      title:"Culinary Stage Demonstration with Chef Rasheed Abdurrahman",
+      mod:"", speakers:"Chef Rasheed Abdurrahman",
+      url:"https://iframe.mediadelivery.net/embed/700386/62827958-8954-4ad0-bbdb-09fe7d8f5472" },
+
+    { day:"Monday, June 1", type:"Keynote", time:"11:00 \u2013 11:20 AM",
+      title:"State Leadership & Investment in Food is Medicine: Delaware's Vision",
+      mod:"", speakers:"Kyle Evans Gay, Lieutenant Governor of Delaware",
+      url:"https://iframe.mediadelivery.net/embed/700386/1c318cac-e781-4f65-86cf-d0746d762e6d" },
+
+    { day:"Monday, June 1", type:"Plenary", time:"11:20 AM \u2013 12:30 PM",
+      title:"Food is Medicine: A Whole-Person Approach to Care",
+      mod:"Dariush Mozaffarian, MD, DrPH", speakers:"Phalba Adams \u00B7 Roseline Ifidon \u00B7 Donna Lawson \u00B7 James Rota \u00B7 Kofi Essel, MD \u00B7 Alicia Higa \u00B7 Arif Kamal, MD \u00B7 Kyu Rhee, MD",
+      url:"https://iframe.mediadelivery.net/embed/700386/8a13be48-1946-4067-8110-2b250cee7ede" },
+
+    { day:"Monday, June 1", type:"Fireside Chat", time:"12:30 \u2013 1:00 PM",
+      title:"Advancing Food is Medicine in Rural Communities",
+      mod:"Emily Kain, MPH", speakers:"Melanie Bush, MPAff \u00B7 Elizabeth Kromm, PhD",
+      url:"https://iframe.mediadelivery.net/embed/700386/aa91b704-f619-43b2-a84f-6f2738f1dd11" },
+
+    { day:"Monday, June 1", type:"Breakout 1 \u00B7 Welcome Remarks", time:"2:00 \u2013 3:15 PM",
+      title:"Advancing & Sustaining Food is Medicine Through a Value-Based Care Lens",
+      mod:"", speakers:"Ameya Kulkarni, MD \u00B7 Pamela Schwartz, MPH",
+      url:"https://iframe.mediadelivery.net/embed/700386/41d60cef-05da-4e15-a35b-b83d6cd1606d" },
+
+    { day:"Monday, June 1", type:"Breakout 1 \u00B7 Fireside Chat", time:"2:00 \u2013 3:15 PM",
+      title:"Advancing & Sustaining Food is Medicine Through a Value-Based Care Lens",
+      mod:"Pamela Schwartz, MPH", speakers:"Kofi Essel, MD \u00B7 Devon Klatell",
+      url:"https://iframe.mediadelivery.net/embed/700386/00ca6503-3f52-43ea-ab05-6449fb583507" },
+
+    { day:"Monday, June 1", type:"Breakout 1 \u00B7 Panel Discussion", time:"2:00 \u2013 3:15 PM",
+      title:"Advancing & Sustaining Food is Medicine Through a Value-Based Care Lens",
+      mod:"Cecilia Gerard", speakers:"Lauren Driscoll \u00B7 Michelle Jester \u00B7 Becky Sheppard \u00B7 Josh Trautwein",
+      url:"https://iframe.mediadelivery.net/embed/700386/80729392-4fa5-4ed6-9c7f-32d8b03db755" },
+
+    { day:"Monday, June 1", type:"Breakout 1", time:"2:00 \u2013 3:15 PM",
+      title:"Coordinating for Clients: Addressing the Clinical to Community Pathway in Technology",
+      mod:"Kim Prendergast, RDN", speakers:"Alison Gustafson, PhD \u00B7 Jason Langheier, MD, MPH \u00B7 Benjamin Martin, JD",
+      url:"https://iframe.mediadelivery.net/embed/700386/ee0999ef-6fda-414c-a2a0-75ef7f9f4a01" },
+
+    { day:"Monday, June 1", type:"Breakout 1", time:"2:00 \u2013 3:15 PM",
+      title:"New Research in Food is Medicine",
+      mod:"Corby Kummer", speakers:"Seth Berkowitz, MD \u00B7 Jorie Butler, PhD \u00B7 Dariush Mozaffarian, MD, DrPH \u00B7 Hilary Seligman, MD",
+      url:"https://iframe.mediadelivery.net/embed/700386/71e39775-4f5d-429e-956e-1dd866c54cc3" },
+
+    { day:"Monday, June 1", type:"Breakout 1", time:"2:00 \u2013 3:15 PM",
+      title:"Farm to FIM: Broadening the Impact of FIM Through Values-Aligned Purchasing",
+      mod:"Betsy Skoda", speakers:"Gary Besaw \u00B7 Steven Chen, MD \u00B7 Henry Crews \u00B7 Christina Economos, PhD \u00B7 Kristin Heltman-Weiss \u00B7 Cate Hensley",
+      url:"https://iframe.mediadelivery.net/embed/700386/46703232-30b2-4f13-803f-34210411b47b" },
+
+    { day:"Monday, June 1", type:"Culinary Demo", time:"3:15 \u2013 3:45 PM",
+      title:"Culinary Stage Demonstration with Dr. Linda Shiue, MD",
+      mod:"", speakers:"Dr. Linda Shiue, MD",
+      url:"https://iframe.mediadelivery.net/embed/700386/d834ba81-f939-429a-95b5-837ec794a4c8" },
+
+    { day:"Monday, June 1", type:"Breakout 2 \u00B7 Fireside Chat", time:"3:45 \u2013 5:00 PM",
+      title:"Clinical & Community Integration: Equity, Education, & Everyday Practice",
+      mod:"Rishi Manchanda, MD, MPH", speakers:"Kyu Rhee, MD \u00B7 Anand Shah, MD",
+      url:"https://iframe.mediadelivery.net/embed/700386/8b791b28-a26f-4c47-b651-b70414fe3b21" },
+
+    { day:"Monday, June 1", type:"Breakout 2 \u00B7 Panel Discussion", time:"3:45 \u2013 5:00 PM",
+      title:"Clinical & Community Integration: Equity, Education, & Everyday Practice",
+      mod:"Marti Macchi, DrPH", speakers:"Michele Arthurs, MD \u00B7 Andrea Caracostis, MD, MPH \u00B7 Anabel Ruiz, MD \u00B7 James Wannares",
+      url:"https://iframe.mediadelivery.net/embed/700386/1fef6a4d-e2c6-41b2-be22-772f5ebcb2d6" },
+
+    { day:"Monday, June 1", type:"Breakout 2", time:"3:45 \u2013 5:00 PM",
+      title:"Tailoring Food is Medicine to Specialized Populations & Care Models",
+      mod:"Senbagam Virudachalam, MD", speakers:"Connie Berryhill \u00B7 Caroline Dotson \u00B7 Lauren Ramos \u00B7 Leah Hebert Welles",
+      url:"https://iframe.mediadelivery.net/embed/700386/5d0a6deb-084a-442d-a0e9-316d18b76201" },
+
+    { day:"Monday, June 1", type:"Breakout 2", time:"3:45 \u2013 5:00 PM",
+      title:"Building Effective Partnerships in Food is Medicine Research",
+      mod:"Holly Freishtat", speakers:"Nicholas Jury, PhD \u00B7 Alisha Reed, PharmD, MBA \u00B7 Lisa Goldman Rosas, PhD \u00B7 Sonya Shin, MD, MPH \u00B7 Erika Tribett, MPH",
+      url:"https://iframe.mediadelivery.net/embed/700386/05b15b4e-f5cf-41ac-9137-af47152cca10" },
+
+    { day:"Monday, June 1", type:"Breakout 2", time:"3:45 \u2013 5:00 PM",
+      title:"Farm to FIM: Scaling Values-Aligned Purchasing in Practice",
+      mod:"Nicole Tichenor Blackstone", speakers:"Cathryn Couch \u00B7 Merry Davis \u00B7 Joshua Faller \u00B7 Brian Hillmer \u00B7 Heather Latino \u00B7 Erin Martin \u00B7 Tom McDougall",
+      url:"https://iframe.mediadelivery.net/embed/700386/fab2f448-d0d7-4244-9678-2aa819b7de22" },
+
+    // ---- TUESDAY, JUNE 2 ----
+    { day:"Tuesday, June 2", type:"Welcome & Fireside Chat", time:"8:45 \u2013 9:05 AM",
+      title:"Day Two Welcome Remarks & Fireside Chat",
+      mod:"", speakers:"Shakirah Aamir \u00b7 Bechara Choucair, MD",
+      url:"https://iframe.mediadelivery.net/embed/700386/864ca44b-e0aa-47f1-8661-ae00a879f2d7" },
+
+    { day:"Tuesday, June 2", type:"Plenary", time:"9:05 \u2013 10:05 AM",
+      title:"Food is More than Medicine: Nourishing Communities, Food Systems, & Economies",
+      mod:"Hilary Seligman, MD", speakers:"Dion Dawson \u00B7 Michelle Howell \u00B7 Edil 'Junior' LeBron \u00B7 Emily Broad Leib \u00B7 Dorella Walters",
+      url:"https://iframe.mediadelivery.net/embed/700386/2d355079-9a40-4434-be10-f0b861718752" },
+
+    { day:"Tuesday, June 2", type:"Fireside Chat", time:"10:05 \u2013 10:35 AM",
+      title:"The \u201CFood\u201D in Food is Medicine",
+      mod:"Rachel Roller", speakers:"Robin McKinnon, PhD",
+      url:"https://iframe.mediadelivery.net/embed/700386/0fdc1878-4338-4cbc-867d-61bb211699a9" },
+
+    { day:"Tuesday, June 2", type:"Culinary Demo", time:"10:35 \u2013 11:15 AM",
+      title:"Culinary Stage Demonstration with Chef Brian Hillmer",
+      mod:"", speakers:"Chef Brian Hillmer",
+      url:"https://iframe.mediadelivery.net/embed/700386/00af1007-0d6f-4970-84b1-a7335e88409a" },
+
+    { day:"Tuesday, June 2", type:"Plenary", time:"11:15 AM \u2013 12:15 PM",
+      title:"Food is Medicine is Good Business, Good Policy, & Good Care",
+      mod:"Christina Rodriguez", speakers:"Steve Brazeel \u00B7 Colleen Briggs \u00B7 Tom Crohan \u00B7 Dana Feldman",
+      url:"https://iframe.mediadelivery.net/embed/700386/0bc7e5c9-ed9d-44c0-84d4-0e6825988955" },
+
+    { day:"Tuesday, June 2", type:"Breakout 3", time:"2:15 \u2013 3:30 PM",
+      title:"Integrating Food is Medicine into Clinical Care to Achieve Better Patient Outcomes",
+      mod:"Pamela Schwartz, MPH", speakers:"Bechara Choucair, MD \u00B7 Anuraag Chigurupati \u00B7 Amanda Flaum \u00B7 Stephen Massey \u00B7 Jenefer Jedele, PhD \u00B7 Hollie Harris",
+      url:"https://iframe.mediadelivery.net/embed/700386/e7e97967-4c76-410f-b638-3484e141b3df" },
+
+    { day:"Tuesday, June 2", type:"Breakout 3 \u00B7 Research, Part One", time:"2:15 \u2013 3:30 PM",
+      title:"Communicating to the Public: Digital, Behavioral, & Artificial Intelligence Tools",
+      mod:"Danielle Nierenberg", speakers:"Nira Goren, MD \u00B7 Noosheen Hashemi \u00B7 Sarah Mastrorocco",
+      url:"https://iframe.mediadelivery.net/embed/700386/2b4a8150-e8f5-48da-b50d-97442692eb04" },
+
+    { day:"Tuesday, June 2", type:"Breakout 3 \u00B7 Research, Part Two", time:"2:15 \u2013 3:30 PM",
+      title:"Increasing Food is Medicine Effectiveness Using Human-Centered Design & Behavioral Science",
+      mod:"Kevin Volpp, MD, PhD", speakers:"Stacey Chang \u00B7 Cait Lamberton, PhD, MBA",
+      url:"https://iframe.mediadelivery.net/embed/700386/d862eae3-ec66-4b1c-8f25-8ad943535a3e" },
+
+    { day:"Tuesday, June 2", type:"Breakout 4 \u00B7 Featured Talk", time:"4:00 \u2013 5:15 PM",
+      title:"Food is Medicine: Charting a Path Forward Across Sectors & Systems",
+      mod:"Dariush Mozaffarian, MD, DrPH", speakers:"Sarah Downer, JD \u00B7 Rachel Fisher",
+      url:"https://iframe.mediadelivery.net/embed/700386/0c13050f-0eea-42c9-a3ad-9b545665de78" },
+
+    { day:"Tuesday, June 2", type:"Breakout 4 \u00B7 Panel Discussion", time:"4:00 \u2013 5:15 PM",
+      title:"Food is Medicine: Charting a Path Forward Across Sectors & Systems",
+      mod:"Michael de la Guardia", speakers:"Haleta Belai \u00B7 Megan Bowman, RDN \u00B7 Erika Hanson, JD \u00B7 Erin McDonald, PhD, MPP",
+      url:"https://iframe.mediadelivery.net/embed/700386/64726092-fe49-49f4-8784-02741b545a5a" },
+
+    { day:"Tuesday, June 2", type:"Breakout 4", time:"4:00 \u2013 5:15 PM",
+      title:"Economic Value of Food is Medicine Interventions",
+      mod:"Grant Leslie", speakers:"David Kim, PhD \u00B7 Kurt Hager, PhD \u00B7 Shelby Reed, PhD \u00B7 Kevin Volpp, MD, PhD \u00B7 Julian Xie, MD",
+      url:"https://iframe.mediadelivery.net/embed/700386/ea181e3a-3fe3-444c-b4a4-aa229e771849" },
+  ];
+
+  var listEl  = document.getElementById('fc-list');
+  var emptyEl = document.getElementById('fc-empty');
+  var countEl = document.getElementById('fc-count');
+  var footEl  = document.getElementById('fc-footer');
+  var qEl     = document.getElementById('fc-q');
+  var playSvg = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>';
+
+  footEl.textContent = sessions.length + ' recordings \u00B7 FIMCON 2026';
+
+  function render(filter){
+    filter = (filter||"").trim().toLowerCase();
+    listEl.innerHTML = "";
+    var shown = 0, currentDay = "", dayCount = 0;
+    sessions.forEach(function(s,i){
+      var hay = (s.title+" "+s.mod+" "+s.speakers+" "+s.type+" "+s.day+" "+s.time).toLowerCase();
+      if(filter && hay.indexOf(filter) === -1) return;
+      shown++;
+      if(s.day !== currentDay){
+        currentDay = s.day;
+        dayCount++;
+        var d = document.createElement('div');
+        d.className = 'fc-day ' + (dayCount % 2 ? 'fc-day--green' : 'fc-day--blue');
+        d.textContent = s.day;
+        listEl.appendChild(d);
+      }
+      var speakerLine = (s.mod ? '<span class="fc-mod">'+s.mod+'</span>' + (s.speakers ? ' \u00B7 ' : '') : '') + (s.speakers||'');
+      var card = document.createElement('div');
+      card.className = 'fc-card';
+      card.innerHTML =
+        '<div class="fc-cardbody">' +
+          '<div class="fc-meta">' +
+          (s.time ? '<span class="fc-time">'+s.time+'</span>' : '') +
+          '<span class="fc-badge">'+s.type+'</span></div>' +
+          '<div class="fc-title">'+s.title+'</div>' +
+          (speakerLine ? '<div class="fc-speakers">'+speakerLine+'</div>' : '') +
+        '</div>' +
+        '<button class="fc-watch" data-idx="'+i+'"><span class="fc-glow"></span><span class="fc-watch-label">'+playSvg+'Watch</span></button>';
+      listEl.appendChild(card);
+    });
+    emptyEl.style.display = shown ? 'none' : 'block';
+    countEl.textContent = filter ? (shown + ' of ' + sessions.length + ' sessions') : (sessions.length + ' recordings');
+  }
+
+  qEl.addEventListener('input', function(e){ render(e.target.value); });
+  render("");
+
+  // Indigo glow follows the cursor across the Watch buttons
+  listEl.addEventListener('mousemove', function(e){
+    var btn = e.target.closest('.fc-watch');
+    if(!btn) return;
+    var r = btn.getBoundingClientRect();
+    btn.style.setProperty('--fc-gx', (e.clientX - r.left) + 'px');
+    btn.style.setProperty('--fc-gy', (e.clientY - r.top) + 'px');
+  });
+
+  // ---- Lightbox video player ----
+  var modal = document.getElementById('fc-modal');
+  var player = document.getElementById('fc-player');
+  var videoEl = document.getElementById('fc-video-el');
+  var modalTitle = document.getElementById('fc-modal-title');
+
+  function embedUrl(url){
+    // Bunny Stream: use the embed URL as-is (owns its player: adaptive streaming, click-to-pause, no pop-out)
+    if(url.indexOf('mediadelivery.net') > -1){
+      return url + (url.indexOf('?') > -1 ? '&' : '?') + 'autoplay=true&preload=true&responsive=true';
+    }
+    // Google Drive: turn any share link into an embeddable /preview URL
+    if(url.indexOf('drive.google.com') > -1){
+      var g = url.match(/\/d\/([\w-]+)/) || url.match(/[?&]id=([\w-]+)/);
+      if(g) return 'https://drive.google.com/file/d/' + g[1] + '/preview';
+    }
+    // Vimeo (default)
+    var m = url.match(/video\/(\d+)/);
+    var id = m ? m[1] : "";
+    return 'https://player.vimeo.com/video/' + id + '?autoplay=1&title=0&byline=0&portrait=0';
+  }
+  function openModal(s){
+    modalTitle.textContent = s.title;
+    var isFile = /\.(mp4|webm|ogv|ogg|mov|m4v)(\?|#|$)/i.test(s.url);
+    modal.classList.toggle('fc-drive', !isFile && s.url.indexOf('drive.google.com') > -1);
+    if(isFile){
+      // Direct video file: use the HTML5 <video> player
+      player.style.display = 'none';
+      player.src = '';
+      videoEl.style.display = 'block';
+      videoEl.src = s.url;
+      videoEl.play().catch(function(){});
+    } else {
+      // Vimeo / Google Drive: use the iframe embed
+      videoEl.pause();
+      videoEl.removeAttribute('src');
+      videoEl.load();
+      videoEl.style.display = 'none';
+      player.style.display = '';
+      player.src = embedUrl(s.url);
+    }
+    modal.classList.add('fc-open');
+    modal.setAttribute('aria-hidden','false');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeModal(){
+    modal.classList.remove('fc-open');
+    modal.setAttribute('aria-hidden','true');
+    player.src = '';
+    videoEl.pause();
+    videoEl.removeAttribute('src');
+    videoEl.load();
+    document.body.style.overflow = '';
+  }
+
+  listEl.addEventListener('click', function(e){
+    var btn = e.target.closest('.fc-watch');
+    if(!btn) return;
+    openModal(sessions[+btn.getAttribute('data-idx')]);
+  });
+  document.getElementById('fc-modal-close').addEventListener('click', closeModal);
+  modal.querySelector('.fc-modal-backdrop').addEventListener('click', closeModal);
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape' && modal.classList.contains('fc-open')) closeModal();
+  });
+})();
+</script>
